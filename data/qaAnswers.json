@@ -1,0 +1,54 @@
+{
+  "1": {
+    "correctAnswer": "Blade of Despair",
+    "answered": {
+      "6915200080": true
+    },
+    "hasWinner": true,
+    "messageId": 94
+  },
+  "2": {
+    "correctAnswer": "Bren Esports",
+    "answered": {
+      "6915200080": true
+    },
+    "hasWinner": true,
+    "messageId": 98
+  },
+  "3": {
+    "correctAnswer": "Harith",
+    "answered": {
+      "5025934832": true,
+      "6915200080": true
+    },
+    "hasWinner": true,
+    "messageId": 110
+  },
+  "4": {
+    "correctAnswer": "Marksman Emblem",
+    "answered": {
+      "5025934832": true,
+      "6915200080": true
+    },
+    "hasWinner": true,
+    "messageId": 119
+  },
+  "5": {
+    "correctAnswer": "40%",
+    "answered": {
+      "5025934832": true,
+      "6915200080": true
+    },
+    "hasWinner": true,
+    "messageId": 127
+  },
+  "6": {
+    "correctAnswer": "Concentrated Energy",
+    "answered": {
+      "5025934832": true,
+      "6338390379": true
+    },
+    "hasWinner": false,
+    "messageId": 139
+  }
+}

@@ -1,0 +1,52 @@
+[
+    {
+        "id": "1",
+        "question": "Which item provides the highest Physical Attack?",
+        "correctAnswer": "Blade of Despair"
+    },
+    {
+        "id": "2",
+        "question": "What is the name of the team that won the M2 World Championship?",
+        "correctAnswer": "Bren Esports"
+    },
+    {
+        "id": "3",
+        "question": "Which hero has the ability called 'Chaos Assault'?",
+        "correctAnswer": "Harith"
+    },
+    {
+        "id": "4",
+        "question": "Which emblem is best suited for Marksman heroes?",
+        "correctAnswer": "Marksman Emblem"
+    },
+    {
+        "id": "5",
+        "question": "What is the cooldown reduction limit in Mobile Legends?",
+        "correctAnswer": "40%"
+    },
+    {
+        "id": "6",
+        "question": "Which item grants Spell Vamp to its user?",
+        "correctAnswer": "Concentrated Energy"
+    },
+    {
+        "id": "7",
+        "question": "What is the maximum rank in Mobile Legends?",
+        "correctAnswer": "Mythical Glory"
+    },
+    {
+        "id": "8",
+        "question": "Which hero is known as the 'Flying Spear'?",
+        "correctAnswer": "Minsitthar"
+    },
+    {
+        "id": "9",
+        "question": "Which team is known for having the player 'Oura'?",
+        "correctAnswer": "EVOS Legends"
+    },
+    {
+        "id": "10",
+        "question": "What is the passive ability of the item 'Queen's Wings'?",
+        "correctAnswer": "Demonize"
+    }
+]
