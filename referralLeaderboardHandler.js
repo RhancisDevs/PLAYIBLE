@@ -1,8 +1,11 @@
 const fs = require('fs');
+const path = require('path');
 
-const referralsFile = './data/referrals.json';
+const referralsFile = path.join(__dirname, './data/referrals.json');
+const invitesFile = path.join(__dirname, './data/invites.json');
 
 let referrals = {};
+let invites = {};
 
 // Load referrals from file
 if (fs.existsSync(referralsFile)) {
@@ -15,8 +18,23 @@ if (fs.existsSync(referralsFile)) {
     }
 }
 
+// Load invites from file
+if (fs.existsSync(invitesFile)) {
+    try {
+        const data = fs.readFileSync(invitesFile, 'utf-8');
+        invites = data ? JSON.parse(data) : {};
+    } catch (error) {
+        console.error('Error parsing invites.json:', error);
+        invites = {};
+    }
+}
+
 function saveReferrals() {
     fs.writeFileSync(referralsFile, JSON.stringify(referrals, null, 2));
+}
+
+function saveInvites() {
+    fs.writeFileSync(invitesFile, JSON.stringify(invites, null, 2));
 }
 
 function addReferral(userId, chatId) {
@@ -52,8 +70,25 @@ function getReferralLeaderboard() {
     return leaderboard;
 }
 
+function getInviteLinkData(inviteLink) {
+    return invites[inviteLink];
+}
+
+function addInviteLink(userId, inviteLink) {
+    invites[inviteLink] = userId;
+    saveInvites();
+}
+
+function deleteInviteLink(inviteLink) {
+    delete invites[inviteLink];
+    saveInvites();
+}
+
 module.exports = {
     addReferral,
     getReferralCount,
-    getReferralLeaderboard
+    getReferralLeaderboard,
+    getInviteLinkData,
+    addInviteLink,
+    deleteInviteLink
 };
