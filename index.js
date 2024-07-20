@@ -3,7 +3,7 @@ const { handleInvites } = require('./commands/invites');
 const { handleReferralLeaderboard } = require('./commands/referralLeaderboard');
 const { handlePointsLeaderboard } = require('./commands/pointsLeaderboard');
 const { handleQuestion, handleAnswer } = require('./commands/qa');
-const { handleMechanics } = require('./commands/mechanics'); // Ensure this import is correct
+const { handleMechanics } = require('./commands/mechanics');
 const pointsHandler = require('./pointsHandler');
 const referralLeaderboardHandler = require('./referralLeaderboardHandler');
 
@@ -38,20 +38,22 @@ bot.on('chat_join_request', async (msg) => {
     const newMemberName = msg.from.username || msg.from.first_name;
     const inviteLink = msg.invite_link;
     const chatId = msg.chat.id;
+    const newUserId = msg.from.id;
 
-    if (inviteLink && referralLeaderboardHandler.getInviteLinkData(inviteLink.invite_link)) {
-        const inviter = referralLeaderboardHandler.getInviteLinkData(inviteLink.invite_link);
-        const inviterId = inviter.userId;
-
-        try {
-            await bot.approveChatJoinRequest(chatId, msg.from.id);
-            const inviterUser = await bot.getChatMember(chatId, inviterId);
-            const inviterName = inviterUser.user.username || inviterUser.user.first_name;
-            const welcomeMessage = `${newMemberName} has joined the channel, invited by ${inviterName}`;
-            bot.sendMessage(chatId, welcomeMessage);
-            referralLeaderboardHandler.updateLeaderboard(inviterId, inviterName);
-        } catch (error) {
-            console.error('Error approving join request or sending welcome message:', error);
+    if (inviteLink) {
+        const inviterData = referralLeaderboardHandler.getInviteLinkData(chatId, inviteLink.invite_link);
+        if (inviterData) {
+            const inviterUsername = inviterData.userId;
+            try {
+                await bot.approveChatJoinRequest(chatId, newUserId);
+                const inviterUser = await bot.getChatMember(chatId, newUserId);
+                const inviterName = inviterUser.user.username || inviterUser.user.first_name;
+                const welcomeMessage = `${newMemberName} has joined the channel, invited by ${inviterName}`;
+                bot.sendMessage(chatId, welcomeMessage);
+                referralLeaderboardHandler.updateLeaderboard(inviterUsername, chatId, newUserId);
+            } catch (error) {
+                console.error('Error approving join request or sending welcome message:', error);
+            }
         }
     }
 });

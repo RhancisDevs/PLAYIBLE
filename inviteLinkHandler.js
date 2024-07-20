@@ -1,7 +1,7 @@
 const axios = require('axios');
 const fs = require('fs');
 
-const token = process.env.tk; // Replace with your bot token or set the environment variable
+const token = process.env.tk || 'YOUR_BOT_TOKEN_HERE'; // Replace with your bot token if not using environment variable
 const inviteLinksFile = './data/inviteLinks.json';
 
 let inviteLinks = {};
@@ -22,17 +22,22 @@ function saveInviteLinks() {
 
 async function createInviteLink(chatId, userId) {
     const url = `https://api.telegram.org/bot${token}/createChatInviteLink`;
-    const response = await axios.post(url, {
-        chat_id: chatId,
-        creates_join_request: true
-    });
-    const inviteLink = response.data.result.invite_link;
-    if (!inviteLinks[chatId]) {
-        inviteLinks[chatId] = {};
+    try {
+        const response = await axios.post(url, {
+            chat_id: chatId,
+            creates_join_request: true
+        });
+        const inviteLink = response.data.result.invite_link;
+        if (!inviteLinks[chatId]) {
+            inviteLinks[chatId] = {};
+        }
+        inviteLinks[chatId][inviteLink] = { userId: userId.toString() };
+        saveInviteLinks();
+        return inviteLink;
+    } catch (error) {
+        console.error('Error creating invite link:', error);
+        throw error;
     }
-    inviteLinks[chatId][inviteLink] = { userId };
-    saveInviteLinks();
-    return inviteLink;
 }
 
 function getInviteLinkData(chatId, inviteLink) {
