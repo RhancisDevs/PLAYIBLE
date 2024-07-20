@@ -3,9 +3,10 @@ const { handleInvites } = require('./commands/invites');
 const { handleReferralLeaderboard } = require('./commands/referralLeaderboard');
 const { handlePointsLeaderboard } = require('./commands/pointsLeaderboard');
 const { handleQuestion, handleAnswer } = require('./commands/qa');
-const { handleMechanics } = require('./commands/mechanics');
+const { handleMechanics } = require('./commands/mechanics'); // Ensure this import is correct
 const pointsHandler = require('./pointsHandler');
 const referralLeaderboardHandler = require('./referralLeaderboardHandler');
+const inviteLinksHandler = require('./inviteLinkHandler');
 
 const token = process.env.tk || 'YOUR_BOT_TOKEN_HERE'; // Replace with your bot token if not using environment variable
 const bot = new TelegramBot(token, { polling: true });
@@ -35,25 +36,29 @@ bot.on('message', async (msg) => {
 });
 
 bot.on('chat_join_request', async (msg) => {
-    const newMemberName = msg.from.username || msg.from.first_name;
-    const inviteLink = msg.invite_link;
     const chatId = msg.chat.id;
     const newUserId = msg.from.id;
+    const newUserName = msg.from.username || msg.from.first_name;
+    const inviteLink = msg.invite_link;
 
     if (inviteLink) {
-        const inviterData = referralLeaderboardHandler.getInviteLinkData(chatId, inviteLink.invite_link);
-        if (inviterData) {
-            const inviterUsername = inviterData.userId;
+        const inviter = inviteLinksHandler.getInviteLinkData(chatId, inviteLink.invite_link);
+        if (inviter) {
+            const inviterId = inviter.userId;
             try {
                 await bot.approveChatJoinRequest(chatId, newUserId);
-                const inviterUser = await bot.getChatMember(chatId, newUserId);
+                const inviterUser = await bot.getChatMember(chatId, inviterId);
                 const inviterName = inviterUser.user.username || inviterUser.user.first_name;
-                const welcomeMessage = `${newMemberName} has joined the channel, invited by ${inviterName}`;
+                const welcomeMessage = `${newUserName} has joined the channel, invited by ${inviterName}`;
                 bot.sendMessage(chatId, welcomeMessage);
-                referralLeaderboardHandler.updateLeaderboard(inviterUsername, chatId, newUserId);
+                await referralLeaderboardHandler.updateLeaderboard(inviterId, chatId, newUserId);
             } catch (error) {
                 console.error('Error approving join request or sending welcome message:', error);
+                bot.sendMessage(chatId, `Failed to approve join request for ${newUserName}: ${error.message}`);
             }
+        } else {
+            console.error('Invite link not found in inviteLinksHandler');
+            bot.sendMessage(chatId, `Invite link not recognized for ${newUserName}`);
         }
     }
 });
