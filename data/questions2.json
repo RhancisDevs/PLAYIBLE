@@ -1,0 +1,24 @@
+{
+    "questions": [
+        {
+            "question": "Which player had the highest kills per game at 3.54 in the S13 regular season?",
+            "answer": "Oheb"
+        },
+        {
+            "question": "Which player had the highest assists per game at 8.60 in the S13 regular season?",
+            "answer": "Chaknu"
+        },
+        {
+            "question": "Which jungler had the most total assists at 221 in the S13 regular season?",
+            "answer": "Demonkite"
+        },
+        {
+            "question": "Which mid laner had the most total assists at 217 in the S13 regular season?",
+            "answer": "Yue"
+        },
+        {
+            "question": "Which player had the highest KDA at 10.76 in the S13 regular season?",
+            "answer": "Super Marco"
+        }
+    ]
+}
